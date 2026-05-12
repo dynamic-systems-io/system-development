@@ -1,0 +1,62 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: development-system-backstage
+  namespace: argocd
+spec:
+  project: default
+  source:
+    repoURL: https://backstage.github.io/charts
+    chart: backstage
+    targetRevision: 2.7.0
+    helm:
+      values: |
+        fullnameOverride: development-system-backstage
+        serviceAccount:
+          create: true
+        postgresql:
+          enabled: true
+        backstage:
+          appConfig:
+            app:
+              title: development-system
+              baseUrl: http://backstage.localhost:8080
+            backend:
+              baseUrl: http://backstage.localhost:8080
+              listen:
+                port: 7007
+              cors:
+                origin: http://backstage.localhost:8080
+                methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
+                credentials: true
+            catalog:
+              locations:
+                - type: url
+                  target: https://raw.githubusercontent.com/dynamic-systems-io/component-operator-resource/main/catalog-info.yaml
+                - type: url
+                  target: https://raw.githubusercontent.com/dynamic-systems-io/component-operator-property/main/catalog-info.yaml
+                - type: url
+                  target: https://raw.githubusercontent.com/dynamic-systems-io/component-operator-sensor/main/catalog-info.yaml
+                - type: url
+                  target: https://raw.githubusercontent.com/dynamic-systems-io/component-operator-actuator/main/catalog-info.yaml
+                - type: url
+                  target: https://raw.githubusercontent.com/dynamic-systems-io/component-operator-system/main/catalog-info.yaml
+                - type: url
+                  target: https://raw.githubusercontent.com/dynamic-systems-io/component-operator-platform/main/catalog-info.yaml
+                - type: url
+                  target: https://raw.githubusercontent.com/dynamic-systems-io/component-operator-deployment/main/catalog-info.yaml
+                - type: url
+                  target: https://raw.githubusercontent.com/dynamic-systems-io/component-operator-simulation/main/catalog-info.yaml
+                - type: url
+                  target: https://raw.githubusercontent.com/dynamic-systems-io/component-library-common/main/catalog-info.yaml
+                - type: url
+                  target: https://raw.githubusercontent.com/dynamic-systems-io/component-library-operator-common/main/catalog-info.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: development-system
+  syncPolicy:
+    automated:
+      prune: true
+      selfHeal: true
+    syncOptions:
+      - CreateNamespace=true

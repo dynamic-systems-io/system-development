@@ -1,0 +1,34 @@
+apiVersion: networking.istio.io/v1beta1
+kind: Gateway
+metadata:
+  name: development-system-gateway
+  namespace: istio-system
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port:
+        number: 80
+        name: http
+        protocol: HTTP
+      hosts:
+        - backstage.127.0.0.1.nip.io
+        - backstage.localhost
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: backstage-external
+  namespace: istio-system
+spec:
+  hosts:
+    - backstage.127.0.0.1.nip.io
+    - backstage.localhost
+  gateways:
+    - development-system-gateway
+  http:
+    - route:
+        - destination:
+            host: development-system-backstage.development-system.svc.cluster.local
+            port:
+              number: 7007
