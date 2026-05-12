@@ -17,8 +17,24 @@ spec:
         postgresql:
           enabled: true
         backstage:
-          extraEnvVarsSecrets:
-            - development-system-backstage-auth
+          image:
+            registry: ghcr.io
+            repository: dynamic-systems-io/system-development-backstage
+            tag: main
+            pullPolicy: IfNotPresent
+          extraEnvVars:
+            - name: AUTH_GITHUB_CLIENT_ID
+              valueFrom:
+                secretKeyRef:
+                  name: development-system-backstage-auth
+                  key: AUTH_GITHUB_CLIENT_ID
+                  optional: true
+            - name: AUTH_GITHUB_CLIENT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: development-system-backstage-auth
+                  key: AUTH_GITHUB_CLIENT_SECRET
+                  optional: true
           appConfig:
             app:
               title: development-system
@@ -34,6 +50,7 @@ spec:
               reading:
                 allow:
                   - host: raw.githubusercontent.com
+                  - host: github.com
             integrations:
               github:
                 - host: github.com
