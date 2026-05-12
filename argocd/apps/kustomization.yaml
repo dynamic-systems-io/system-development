@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - 01-backstage.yaml
   - 02-platform-development-integrations.yaml
+  - 03-development-system-secrets.yaml

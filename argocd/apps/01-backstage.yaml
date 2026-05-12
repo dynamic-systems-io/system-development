@@ -17,6 +17,8 @@ spec:
         postgresql:
           enabled: true
         backstage:
+          extraEnvVarsSecrets:
+            - development-system-backstage-auth
           appConfig:
             app:
               title: development-system
@@ -29,6 +31,23 @@ spec:
                 origin: http://backstage.localhost:8080
                 methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
                 credentials: true
+              reading:
+                allow:
+                  - host: raw.githubusercontent.com
+            integrations:
+              github:
+                - host: github.com
+            auth:
+              environment: development
+              providers:
+                github:
+                  development:
+                    clientId: ${AUTH_GITHUB_CLIENT_ID}
+                    clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
+                    signIn:
+                      resolvers:
+                        - resolver: usernameMatchingUserEntityName
+                          dangerouslyAllowSignInWithoutUserInCatalog: true
             catalog:
               locations:
                 - type: url
