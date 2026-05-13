@@ -4,30 +4,33 @@ Central development system for platform developer experience services.
 
 ## Scope
 
-- Backstage developer portal
-- Backstage catalog ingestion for platform component repositories
-- GitHub OAuth authentication for Backstage via External Secrets
-- Istio ingress route for Backstage
+- Developer portal (Backstage-based)
+- Developer portal catalog ingestion for platform component repositories
+- Keycloak OIDC authentication for the developer portal via External Secrets
+- Istio ingress route for the developer portal
 
 ## Layout
 
 - `argocd/apps/` - Argo CD Applications for development system components
-- `integrations/` - shared integration manifests (ingress, mesh wiring)
-- `security/` - ExternalSecret resources + SecretStore template for development-system workloads
+- `integrations/` - shared integration manifests (ingress, mesh wiring, SSO auth policy examples)
+- `security/` - Crossplane OIDC + SecretStore provider claims + ExternalSecret resources for development-system workloads
 - `docs/` - operational runbooks
 
 ## Access endpoints (kind default)
 
-- Backstage: `http://backstage.localhost:8080` (or `http://backstage.127.0.0.1.nip.io:8080`)
+- Developer portal: `http://backstage.localhost:8080` (or `http://backstage.127.0.0.1.nip.io:8080`)
 
 ## Secret prerequisites
 
-Backstage auth expects a namespace-scoped `SecretStore` named `secret-store` in namespace `development-system` and a remote secret at key `development-system/backstage/github-oauth` with properties:
+By default this repo provisions local Keycloak OIDC (`security/00-oidc-provider-local-keycloak.yaml`) and `secret-store` via Crossplane using OpenBao in-cluster (`security/00-openbao-secret-store-provider.yaml`).
 
-- `clientId`
-- `clientSecret`
+Developer portal access is enforced centrally at the Istio gateway via oauth2-proxy. App-level login is disabled for a unified login flow.
+
+Cloud options are always supported with provider claim examples in the same folder:
+- AWS Secrets Manager: `security/aws-secret-store-provider.example.yaml`
+- Azure Key Vault: `security/azure-secret-store-provider.example.yaml`
 
 See:
 
 - `security/secret-store.example.yaml`
-- `docs/backstage-oauth-runbook.md`
+- `docs/developer-portal-oauth-runbook.md`

@@ -1,0 +1,38 @@
+# Example Istio authn/authz for developer portal UI SSO.
+#
+# This file is intentionally NOT included in kustomization by default because
+# it requires full OIDC client configuration in each UI and a browser-accessible
+# issuer/JWKS endpoint strategy.
+apiVersion: security.istio.io/v1
+kind: RequestAuthentication
+metadata:
+  name: ui-sso-jwt
+  namespace: istio-system
+spec:
+  selector:
+    matchLabels:
+      istio: ingressgateway
+  jwtRules:
+    - issuer: http://oidc-keycloak.development-system.svc.cluster.local:8080/realms/master
+      jwksUri: http://oidc-keycloak.development-system.svc.cluster.local:8080/realms/master/protocol/openid-connect/certs
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+metadata:
+  name: require-authenticated-ui-access-development
+  namespace: istio-system
+spec:
+  selector:
+    matchLabels:
+      istio: ingressgateway
+  action: ALLOW
+  rules:
+    - to:
+        - operation:
+            hosts:
+              - backstage.localhost
+              - backstage.127.0.0.1.nip.io
+      from:
+        - source:
+            requestPrincipals:
+              - "*"

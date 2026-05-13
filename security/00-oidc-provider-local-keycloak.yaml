@@ -1,0 +1,18 @@
+apiVersion: infrastructure.platform.io/v1alpha1
+kind: OIDCProvider
+metadata:
+  name: development-system-oidc-provider
+spec:
+  compositionSelector:
+    matchLabels:
+      infrastructure.platform.io/cloud: local
+      infrastructure.platform.io/provider-implementation: keycloak
+      infrastructure.platform.io/deployment-mode: incluster
+  parameters:
+    instanceId: development-system
+    cloud: local
+    providerImplementation: keycloak
+    deploymentMode: incluster
+    region: local
+    infrastructureNamespace: development-system
+    clientId: platform-ui

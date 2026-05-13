@@ -14,6 +14,8 @@ spec:
       hosts:
         - backstage.127.0.0.1.nip.io
         - backstage.localhost
+        - keycloak.127.0.0.1.nip.io
+        - keycloak.localhost
 ---
 apiVersion: networking.istio.io/v1beta1
 kind: VirtualService
@@ -32,3 +34,21 @@ spec:
             host: development-system-backstage.development-system.svc.cluster.local
             port:
               number: 7007
+---
+apiVersion: networking.istio.io/v1beta1
+kind: VirtualService
+metadata:
+  name: keycloak-external
+  namespace: istio-system
+spec:
+  hosts:
+    - keycloak.127.0.0.1.nip.io
+    - keycloak.localhost
+  gateways:
+    - development-system-gateway
+  http:
+    - route:
+        - destination:
+            host: oidc-keycloak.development-system.svc.cluster.local
+            port:
+              number: 8080
