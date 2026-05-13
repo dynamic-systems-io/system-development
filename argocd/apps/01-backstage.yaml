@@ -89,6 +89,8 @@ spec:
                   target: https://raw.githubusercontent.com/dynamic-systems-io/component-library-operator-common/main/catalog-info.yaml
                 - type: url
                   target: https://raw.githubusercontent.com/dynamic-systems-io/component-service-simulation/main/catalog-info.yaml
+                - type: url
+                  target: https://raw.githubusercontent.com/dynamic-systems-io/system-development-backstage/main/catalog-info.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: development-system
