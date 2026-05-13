@@ -19,7 +19,7 @@ spec:
         backstage:
           image:
             registry: ghcr.io
-            repository: dynamic-systems-io/system-development-backstage
+            repository: dynamic-systems-io/component-ui-backstage
             tag: main
             pullPolicy: IfNotPresent
           extraEnvVars:
@@ -90,7 +90,7 @@ spec:
                 - type: url
                   target: https://raw.githubusercontent.com/dynamic-systems-io/component-service-simulation/main/catalog-info.yaml
                 - type: url
-                  target: https://raw.githubusercontent.com/dynamic-systems-io/system-development-backstage/main/catalog-info.yaml
+                  target: https://raw.githubusercontent.com/dynamic-systems-io/component-ui-backstage/main/catalog-info.yaml
   destination:
     server: https://kubernetes.default.svc
     namespace: development-system
