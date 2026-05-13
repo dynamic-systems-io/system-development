@@ -12,6 +12,8 @@ spec:
         name: http
         protocol: HTTP
       hosts:
+        - backstage.docker.internal
+        - keycloak.docker.internal
         - backstage.127.0.0.1.nip.io
         - backstage.localhost
         - keycloak.127.0.0.1.nip.io
@@ -24,6 +26,7 @@ metadata:
   namespace: istio-system
 spec:
   hosts:
+    - backstage.docker.internal
     - backstage.127.0.0.1.nip.io
     - backstage.localhost
   gateways:
@@ -42,6 +45,7 @@ metadata:
   namespace: istio-system
 spec:
   hosts:
+    - keycloak.docker.internal
     - keycloak.127.0.0.1.nip.io
     - keycloak.localhost
   gateways:
