@@ -13,7 +13,8 @@ Central development system for platform developer experience services.
 
 - `argocd/apps/` - Argo CD Applications for development system components
 - `integrations/` - shared integration manifests (ingress, mesh wiring)
-- `security/` - ExternalSecret resources for development-system workloads
+- `security/` - ExternalSecret resources + SecretStore template for development-system workloads
+- `docs/` - operational runbooks
 
 ## Access endpoints (kind default)
 
@@ -25,3 +26,8 @@ Backstage auth expects a namespace-scoped `SecretStore` named `secret-store` in 
 
 - `clientId`
 - `clientSecret`
+
+See:
+
+- `security/secret-store.example.yaml`
+- `docs/backstage-oauth-runbook.md`
